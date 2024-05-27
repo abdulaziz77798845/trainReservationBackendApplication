@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > NorthPaymentService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.demo.service.paymentImpl</a>
+</div>
+
+<h1>Coverage Summary for Class: NorthPaymentService (com.example.demo.service.paymentImpl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NorthPaymentService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (1/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    10%
+  </span>
+  <span class="absValue">
+    (1/10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.demo.service.paymentImpl;
+&nbsp;
+&nbsp;import com.example.demo.model.Payment;
+&nbsp;import org.bson.types.ObjectId;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.beans.factory.annotation.Qualifier;
+&nbsp;import org.springframework.data.mongodb.core.MongoTemplate;
+&nbsp;import org.springframework.data.mongodb.core.query.Criteria;
+&nbsp;import org.springframework.data.mongodb.core.query.Query;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class NorthPaymentService implements PaymentService {</b>
+&nbsp;
+&nbsp;    @Qualifier(&quot;northTemplate&quot;)
+&nbsp;    @Autowired
+&nbsp;    private MongoTemplate northPayTemplate;
+&nbsp;
+&nbsp;    public Payment addPayment(Payment payment) {
+<b class="nc">&nbsp;        northPayTemplate.insert(payment);</b>
+<b class="nc">&nbsp;        return payment;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Payment&gt; findPaymentById(String payID){
+<b class="nc">&nbsp;        return Optional.ofNullable(northPayTemplate.findById(payID, Payment.class));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deletePaymentByID(String payID){
+<b class="nc">&nbsp;        Query query = Query.query(Criteria.where(&quot;_id&quot;).is(new ObjectId(payID)));</b>
+<b class="nc">&nbsp;        northPayTemplate.remove(query, Payment.class);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void delete(Payment payment){
+<b class="nc">&nbsp;        Query query = Query.query(Criteria.where(&quot;_id&quot;).is(payment.getId()));</b>
+<b class="nc">&nbsp;        northPayTemplate.remove(query, Payment.class);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Payment&gt; getAllPaymentInTheRegion(){
+<b class="nc">&nbsp;        return northPayTemplate.findAll(Payment.class);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void savePayment(Payment payment){
+<b class="nc">&nbsp;        northPayTemplate.save(payment);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-15 10:36</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > TrainService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.demo.service.trainImpl</a>
+</div>
+
+<h1>Coverage Summary for Class: TrainService (com.example.demo.service.trainImpl)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">TrainService$MockitoMock$i1nA4eav</td>
+  </tr>
+  <tr>
+    <td class="name">TrainService$MockitoMock$i1nA4eav$auxiliary$KMd5L9At</td>
+  </tr>
+  <tr>
+    <td class="name">TrainService$MockitoMock$i1nA4eav$auxiliary$MUMhaoJP</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.demo.service.trainImpl;
+&nbsp;
+&nbsp;import com.example.demo.model.Passenger;
+&nbsp;import com.example.demo.model.Train;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;
+&nbsp;public interface TrainService {
+&nbsp;	Train addTrain(Train train);
+&nbsp;	Train getTrainByName(String trainName);
+&nbsp;	List&lt;Passenger&gt; getPassengersByTrainName(String trainName);
+&nbsp;	Train updateTrain(Train train);
+&nbsp;	List&lt;Train&gt; getAllTrains();
+&nbsp;	Optional&lt;Train&gt; findTrainById(String trainID);
+&nbsp;	void deleteTrain(String trainID);
+&nbsp;
+&nbsp;	void saveTrain(Train train);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-15 10:36</div>
+</div>
+</body>
+</html>

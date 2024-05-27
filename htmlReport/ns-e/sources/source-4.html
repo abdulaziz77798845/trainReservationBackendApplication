@@ -1,0 +1,155 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > WestPassengerService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.demo.service.passImpl</a>
+</div>
+
+<h1>Coverage Summary for Class: WestPassengerService (com.example.demo.service.passImpl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">WestPassengerService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.demo.service.passImpl;
+&nbsp;
+&nbsp;import com.example.demo.model.Passenger;
+&nbsp;import org.bson.types.ObjectId;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.beans.factory.annotation.Qualifier;
+&nbsp;import org.springframework.data.mongodb.core.MongoTemplate;
+&nbsp;import org.springframework.data.mongodb.core.query.Criteria;
+&nbsp;import org.springframework.data.mongodb.core.query.Query;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class WestPassengerService implements PassengerService{</b>
+&nbsp;
+&nbsp;    @Qualifier(&quot;westTemplate&quot;)
+&nbsp;    @Autowired
+&nbsp;    private MongoTemplate westPassTemplate;
+&nbsp;
+&nbsp;    public Passenger addPassenger(Passenger passenger) {
+<b class="fc">&nbsp;        westPassTemplate.insert(passenger);</b>
+<b class="fc">&nbsp;        return passenger;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public Optional&lt;Passenger&gt; findPassengerById(String passID){
+<b class="fc">&nbsp;        return Optional.ofNullable(westPassTemplate.findById(passID, Passenger.class));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deletePassengerByID(String passID){
+<b class="fc">&nbsp;        Query query = Query.query(Criteria.where(&quot;_id&quot;).is(new ObjectId(passID)));</b>
+<b class="fc">&nbsp;        westPassTemplate.remove(query, Passenger.class);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void delete(Passenger passenger){
+<b class="fc">&nbsp;        Query query = Query.query(Criteria.where(&quot;_id&quot;).is(passenger.getId()));</b>
+<b class="fc">&nbsp;        westPassTemplate.remove(query, Passenger.class);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;Passenger&gt; getAllPassengersInTheRegion(){
+<b class="fc">&nbsp;        return westPassTemplate.findAll(Passenger.class);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void savePassenger(Passenger passenger){
+<b class="nc">&nbsp;        westPassTemplate.save(passenger);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-15 10:36</div>
+</div>
+</body>
+</html>

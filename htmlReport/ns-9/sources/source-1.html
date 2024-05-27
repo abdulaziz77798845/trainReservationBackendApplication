@@ -1,0 +1,182 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Mapper</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.demo.mapper</a>
+</div>
+
+<h1>Coverage Summary for Class: Mapper (com.example.demo.mapper)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Mapper</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (2/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    49.1%
+  </span>
+  <span class="absValue">
+    (27/55)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.demo.mapper;
+&nbsp;
+&nbsp;import com.example.demo.dto.PassengerDTO;
+&nbsp;import com.example.demo.dto.TrainDTO;
+&nbsp;import com.example.demo.model.Passenger;
+&nbsp;import com.example.demo.model.Train;
+&nbsp;import org.springframework.stereotype.Component;
+&nbsp;
+<b class="nc">&nbsp;public class Mapper {</b>
+&nbsp;
+&nbsp;	public static TrainDTO convertToTrainDTO(Train train) {
+<b class="nc">&nbsp;		TrainDTO trainDTO=new TrainDTO();</b>
+<b class="nc">&nbsp;		trainDTO.setTrainName(train.getTrainName());</b>
+<b class="nc">&nbsp;		trainDTO.setTrainFee(train.getTrainFee());</b>
+<b class="nc">&nbsp;		trainDTO.setDate(train.getDate());</b>
+<b class="nc">&nbsp;		trainDTO.setFrom(train.getFrom());</b>
+<b class="nc">&nbsp;		trainDTO.setTo(train.getTo());</b>
+<b class="nc">&nbsp;		trainDTO.setBoardingTime(train.getBoardingTime());</b>
+<b class="nc">&nbsp;		trainDTO.setDroppingTime(train.getDroppingTime());</b>
+<b class="nc">&nbsp;		trainDTO.setLowerBerthCount(train.getLowerBerthCount());</b>
+<b class="nc">&nbsp;		trainDTO.setMiddleBerthCount(train.getMiddleBerthCount());</b>
+<b class="nc">&nbsp;		trainDTO.setUpperBerthCount(train.getUpperBerthCount());</b>
+<b class="nc">&nbsp;		trainDTO.setRacCount(train.getRacCount());</b>
+<b class="nc">&nbsp;		trainDTO.setWaitingCount(train.getWaitingCount());</b>
+<b class="nc">&nbsp;		trainDTO.setHomeRegion(train.getHomeRegion());</b>
+<b class="nc">&nbsp;		trainDTO.setFromRegion(train.getFromRegion());</b>
+<b class="nc">&nbsp;		trainDTO.setToRegion(train.getToRegion());</b>
+<b class="nc">&nbsp;		return trainDTO;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	
+&nbsp;	public static PassengerDTO convertToPassengerDTO(Passenger passenger) {
+<b class="nc">&nbsp;		PassengerDTO passengerDTO = new PassengerDTO();</b>
+<b class="nc">&nbsp;		passengerDTO.setPassengerTrainId(passenger.getPassengerTrainId());</b>
+<b class="nc">&nbsp;		passengerDTO.setPassengerName(passenger.getPassengerName());</b>
+<b class="nc">&nbsp;		passengerDTO.setAge(passenger.getAge());</b>
+<b class="nc">&nbsp;		passengerDTO.setDate(passenger.getDate());</b>
+<b class="nc">&nbsp;		passengerDTO.setFrom(passenger.getFrom());</b>
+<b class="nc">&nbsp;		passengerDTO.setTo(passenger.getTo());</b>
+<b class="nc">&nbsp;		passengerDTO.setBerthPreference(passenger.getBerthPreference());</b>
+<b class="nc">&nbsp;		passengerDTO.setEmailId(passenger.getEmailId());</b>
+<b class="nc">&nbsp;		return passengerDTO;	</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public static Train convertToTrain(TrainDTO trainDTO) {
+<b class="fc">&nbsp;		Train train = new Train();</b>
+<b class="fc">&nbsp;		train.setTrainName(trainDTO.getTrainName());</b>
+<b class="fc">&nbsp;		train.setTrainFee(trainDTO.getTrainFee());</b>
+<b class="fc">&nbsp;		train.setDate(trainDTO.getDate());</b>
+<b class="fc">&nbsp;		train.setFrom(trainDTO.getFrom());</b>
+<b class="fc">&nbsp;		train.setTo(trainDTO.getTo());</b>
+<b class="fc">&nbsp;		train.setBoardingTime(trainDTO.getBoardingTime());</b>
+<b class="fc">&nbsp;		train.setDroppingTime(trainDTO.getDroppingTime());</b>
+<b class="fc">&nbsp;		train.setLowerBerthCount(trainDTO.getLowerBerthCount());</b>
+<b class="fc">&nbsp;		train.setUpperBerthCount(trainDTO.getUpperBerthCount());</b>
+<b class="fc">&nbsp;		train.setMiddleBerthCount(trainDTO.getMiddleBerthCount());</b>
+<b class="fc">&nbsp;		train.setRacCount(trainDTO.getRacCount());</b>
+<b class="fc">&nbsp;		train.setWaitingCount(trainDTO.getWaitingCount());</b>
+<b class="fc">&nbsp;		train.setHomeRegion(trainDTO.getHomeRegion());</b>
+<b class="fc">&nbsp;		train.setToRegion(trainDTO.getToRegion());</b>
+<b class="fc">&nbsp;		train.setFromRegion(trainDTO.getFromRegion());</b>
+<b class="fc">&nbsp;		return train;</b>
+&nbsp;	}
+&nbsp;	
+&nbsp;	public static Passenger convertToPassenger(PassengerDTO passengerDTO) {
+<b class="fc">&nbsp;		Passenger passenger = new Passenger();</b>
+<b class="fc">&nbsp;		passenger.setPassengerTrainId(passengerDTO.getPassengerTrainId());</b>
+<b class="fc">&nbsp;		passenger.setPassengerName(passengerDTO.getPassengerName());</b>
+<b class="fc">&nbsp;		passenger.setAge(passengerDTO.getAge());</b>
+<b class="fc">&nbsp;		passenger.setDate(passengerDTO.getDate());</b>
+<b class="fc">&nbsp;		passenger.setFrom(passengerDTO.getFrom());</b>
+<b class="fc">&nbsp;		passenger.setTo(passenger.getTo());</b>
+<b class="fc">&nbsp;		passenger.setBerthPreference(passengerDTO.getBerthPreference());</b>
+<b class="fc">&nbsp;		passenger.setEmailId(passengerDTO.getEmailId());</b>
+<b class="fc">&nbsp;		return passenger;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-15 10:36</div>
+</div>
+</body>
+</html>

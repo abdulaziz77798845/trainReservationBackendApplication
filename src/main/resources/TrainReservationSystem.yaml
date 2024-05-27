@@ -1,0 +1,450 @@
+openapi: 3.0.1
+info:
+  title: Train Reservation System
+  description: Region wise booking starts from tomorrow
+  version: 3.1.0
+servers:
+  - url: http://localhost:8081
+    description: Generated server url
+paths:
+  /api/trains/update:
+    put:
+      tags:
+        - train-controller
+      summary: Update the train in the region
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Train'
+      security:
+        - bearerAuth: []
+  /auth/register:
+    post:
+      tags:
+        - authentication-controller
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /auth/authenticate:
+    post:
+      tags:
+        - authentication-controller
+      operationId: authenticate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /api/trains/add:
+    post:
+      tags:
+        - train-controller
+      summary: 'Add the train to the region '
+      operationId: addTrain
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Train'
+      security:
+        - bearerAuth: []
+  /api/passenger/cancel:
+    post:
+      tags:
+        - passenger-controller
+      summary: Ticket Cancelling
+      operationId: cancelBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+        - bearerAuth: []
+  /api/passenger/book:
+    post:
+      tags:
+        - passenger-controller
+      summary: Ticket Booking
+      operationId: bookPassenger
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PassengerDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Passenger'
+      security:
+        - bearerAuth: []
+  /api/trains/getAllTrainsInTheRegion:
+    get:
+      tags:
+        - train-controller
+      summary: Get all trains in the region
+      operationId: getAllTrainsByRegions
+      parameters:
+        - name: region
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Train'
+      security:
+        - bearerAuth: []
+  /api/passenger/viewAllTheTrainsByRegion:
+    get:
+      tags:
+        - passenger-controller
+      summary: Get all the trains by region
+      operationId: getAllTrainsByRegions_1
+      parameters:
+        - name: region
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Train'
+      security:
+        - bearerAuth: []
+  /api/trains/deleteById/{id}:
+    delete:
+      tags:
+        - train-controller
+      summary: Delete train in the region by ID
+      operationId: deleteTrain
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: region
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    TrainDTO:
+      type: object
+      properties:
+        trainName:
+          type: string
+        date:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        lowerBerthCount:
+          type: integer
+          format: int32
+        middleBerthCount:
+          type: integer
+          format: int32
+        upperBerthCount:
+          type: integer
+          format: int32
+        racCount:
+          type: integer
+          format: int32
+        waitingCount:
+          type: integer
+          format: int32
+        trainFee:
+          type: number
+          format: double
+        boardingTime:
+          type: string
+        droppingTime:
+          type: string
+        homeRegion:
+          type: string
+        fromRegion:
+          type: string
+        toRegion:
+          type: string
+    Passenger:
+      type: object
+      properties:
+        id:
+          type: string
+        passengerTrainName:
+          type: string
+        passengerTrainId:
+          type: string
+        passengerName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        date:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        berthPreference:
+          type: string
+        allowedPreference:
+          type: string
+        boardingTime:
+          type: string
+        droppingTime:
+          type: string
+        seatNumber:
+          type: integer
+          format: int32
+        emailId:
+          type: string
+        bill:
+          $ref: '#/components/schemas/Payment'
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        trainName:
+          type: string
+        trainId:
+          type: string
+        passengerName:
+          type: string
+        passengerId:
+          type: string
+        berthPreference:
+          type: string
+        seatNumber:
+          type: integer
+          format: int32
+        amount:
+          type: number
+          format: double
+    Train:
+      type: object
+      properties:
+        id:
+          type: string
+        trainName:
+          type: string
+        date:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        bookedPassengers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Passenger'
+        lowerBerth:
+          type: array
+          items:
+            $ref: '#/components/schemas/Passenger'
+        upperBerth:
+          type: array
+          items:
+            $ref: '#/components/schemas/Passenger'
+        middleBerth:
+          type: array
+          items:
+            $ref: '#/components/schemas/Passenger'
+        racPassengers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Passenger'
+        waitingList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Passenger'
+        lowerBerthCount:
+          type: integer
+          format: int32
+        upperBerthCount:
+          type: integer
+          format: int32
+        middleBerthCount:
+          type: integer
+          format: int32
+        racCount:
+          type: integer
+          format: int32
+        waitingCount:
+          type: integer
+          format: int32
+        trainFee:
+          type: number
+          format: double
+        boardingTime:
+          type: string
+        droppingTime:
+          type: string
+        homeRegion:
+          type: string
+        fromRegion:
+          type: string
+        toRegion:
+          type: string
+    GrantedAuthority:
+      type: object
+      properties:
+        authority:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - PASSENGER
+        enabled:
+          type: boolean
+        authorities:
+          type: array
+          items:
+            $ref: '#/components/schemas/GrantedAuthority'
+        accountNonLocked:
+          type: boolean
+        accountNonExpired:
+          type: boolean
+        credentialsNonExpired:
+          type: boolean
+    AuthenticationResponse:
+      type: object
+      properties:
+        jwt:
+          type: string
+    AuthenticationRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    CancelDTO:
+      type: object
+      properties:
+        trainId:
+          type: string
+        passId:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        berth:
+          type: string
+        emailId:
+          type: string
+    PassengerDTO:
+      type: object
+      properties:
+        passengerTrainId:
+          type: string
+        passengerName:
+          type: string
+        age:
+          type: integer
+          format: int32
+        date:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        berthPreference:
+          type: string
+        emailId:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: JWT authentication
+      in: header
+      scheme: bearer
+      bearerFormat: JWT

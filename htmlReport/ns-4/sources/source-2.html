@@ -1,0 +1,233 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > MongoConfiguration</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.demo.config</a>
+</div>
+
+<h1>Coverage Summary for Class: MongoConfiguration (com.example.demo.config)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MongoConfiguration</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/21)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MongoConfiguration$$SpringCGLIB$$0</td>
+  </tr>
+  <tr>
+    <td class="name">MongoConfiguration$$SpringCGLIB$$FastClass$$0</td>
+  </tr>
+  <tr>
+    <td class="name">MongoConfiguration$$SpringCGLIB$$FastClass$$1</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/21)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.demo.config;
+&nbsp;
+&nbsp;
+&nbsp;import org.springframework.boot.autoconfigure.mongo.MongoProperties;
+&nbsp;import org.springframework.boot.context.properties.ConfigurationProperties;
+&nbsp;import org.springframework.context.annotation.Bean;
+&nbsp;import org.springframework.context.annotation.Configuration;
+&nbsp;import org.springframework.context.annotation.Primary;
+&nbsp;import org.springframework.data.mongodb.MongoDatabaseFactory;
+&nbsp;import org.springframework.data.mongodb.core.MongoTemplate;
+&nbsp;import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
+&nbsp;
+&nbsp;@Configuration
+<b class="fc">&nbsp;public class MongoConfiguration {</b>
+&nbsp;
+&nbsp;    @Primary
+&nbsp;    @Bean(name = &quot;northDBProperties&quot;)
+&nbsp;    @ConfigurationProperties(prefix = &quot;spring.data.mongodb.north&quot;)
+&nbsp;    public MongoProperties getNorthProps() throws Exception{
+<b class="fc">&nbsp;        return new MongoProperties();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean(name = &quot;southDBProperties&quot;)
+&nbsp;    @ConfigurationProperties(prefix = &quot;spring.data.mongodb.south&quot;)
+&nbsp;    public MongoProperties getSouthProps() throws Exception {
+<b class="fc">&nbsp;        return new MongoProperties();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean(name = &quot;westDBProperties&quot;)
+&nbsp;    @ConfigurationProperties(prefix = &quot;spring.data.mongodb.west&quot;)
+&nbsp;    public MongoProperties getWestProps() throws Exception {
+<b class="fc">&nbsp;        return new MongoProperties();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Bean(name = &quot;eastDBProperties&quot;)
+&nbsp;    @ConfigurationProperties(prefix = &quot;spring.data.mongodb.east&quot;)
+&nbsp;    public MongoProperties getEastProps() throws Exception {
+<b class="fc">&nbsp;        return new MongoProperties();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean(name = &quot;userDBProperties&quot;)
+&nbsp;    @ConfigurationProperties(prefix = &quot;spring.data.mongodb.user&quot;)
+&nbsp;    public MongoProperties getUserProps() throws Exception{
+<b class="fc">&nbsp;        return new MongoProperties();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Primary
+&nbsp;    @Bean(name = &quot;northTemplate&quot;)
+&nbsp;    public MongoTemplate northMongoTemplate() throws Exception{
+<b class="fc">&nbsp;        return new MongoTemplate(northMongoDatabaseFactory(getNorthProps()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean(name = &quot;southTemplate&quot;)
+&nbsp;    public MongoTemplate southMongoTemplate() throws Exception{
+<b class="fc">&nbsp;        return new MongoTemplate(southMongoDatabaseFactory(getSouthProps()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean(name = &quot;westTemplate&quot;)
+&nbsp;    public MongoTemplate westMongoTemplate() throws Exception{
+<b class="fc">&nbsp;        return new MongoTemplate(westMongoDatabaseFactory(getWestProps()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean(name = &quot;eastTemplate&quot;)
+&nbsp;    public MongoTemplate eastMongoTemplate() throws Exception{
+<b class="fc">&nbsp;        return new MongoTemplate(eastMongoDatabaseFactory(getEastProps()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Bean(name = &quot;userTemplate&quot;)
+&nbsp;    public MongoTemplate userMongoTemplate() throws Exception {
+<b class="fc">&nbsp;        return new MongoTemplate(userMongoDatabaseFactory(getUserProps()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Primary
+&nbsp;    @Bean
+&nbsp;    public MongoDatabaseFactory northMongoDatabaseFactory(MongoProperties mongoProperties) throws Exception{
+<b class="fc">&nbsp;        return new SimpleMongoClientDatabaseFactory(</b>
+<b class="fc">&nbsp;                mongoProperties.getUri()</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public MongoDatabaseFactory southMongoDatabaseFactory(MongoProperties mongoProperties) throws Exception{
+<b class="fc">&nbsp;        return new SimpleMongoClientDatabaseFactory(</b>
+<b class="fc">&nbsp;                mongoProperties.getUri()</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public MongoDatabaseFactory westMongoDatabaseFactory(MongoProperties mongoProperties) throws Exception{
+<b class="fc">&nbsp;        return new SimpleMongoClientDatabaseFactory(</b>
+<b class="fc">&nbsp;                mongoProperties.getUri()</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public MongoDatabaseFactory eastMongoDatabaseFactory(MongoProperties mongoProperties) throws Exception{
+<b class="fc">&nbsp;        return new SimpleMongoClientDatabaseFactory(</b>
+<b class="fc">&nbsp;                mongoProperties.getUri()</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public MongoDatabaseFactory userMongoDatabaseFactory(MongoProperties mongoProperties) throws Exception{
+<b class="fc">&nbsp;        return new SimpleMongoClientDatabaseFactory(</b>
+<b class="fc">&nbsp;                mongoProperties.getUri()</b>
+&nbsp;        );
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-15 10:36</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,767 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > BookingAndCancellingServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.demo.service.booking_and_cancelling</a>
+</div>
+
+<h1>Coverage Summary for Class: BookingAndCancellingServiceImpl (com.example.demo.service.booking_and_cancelling)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BookingAndCancellingServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.7%
+  </span>
+  <span class="absValue">
+    (22/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    46.6%
+  </span>
+  <span class="absValue">
+    (104/223)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    73.6%
+  </span>
+  <span class="absValue">
+    (220/299)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.demo.service.booking_and_cancelling;
+&nbsp;
+&nbsp;import com.example.demo.dto.CancelDTO;
+&nbsp;import com.example.demo.dto.PassengerDTO;
+&nbsp;import com.example.demo.exception.InvalidDetailsException;
+&nbsp;import com.example.demo.mapper.Mapper;
+&nbsp;import com.example.demo.model.Passenger;
+&nbsp;import com.example.demo.model.Payment;
+&nbsp;import com.example.demo.model.Train;
+&nbsp;import com.example.demo.service.booking_and_cancelling.BookingAndCancellingService;
+&nbsp;import com.example.demo.service.email_service.EmailService;
+&nbsp;import com.example.demo.service.passImpl.*;
+&nbsp;import com.example.demo.service.paymentImpl.*;
+&nbsp;import com.example.demo.service.trainImpl.*;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Objects;
+&nbsp;import java.util.Optional;
+&nbsp;
+<b class="fc">&nbsp;@Service</b>
+<b class="fc">&nbsp;public class BookingAndCancellingServiceImpl implements BookingAndCancellingService {</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private EmailService emailService;
+&nbsp;    //Train Service
+&nbsp;    @Autowired
+&nbsp;    private EastIndianTrainServiceImpl eastIndianTrainService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private SouthIndianTrainServiceImpl southIndianTrainService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private WestIndianTrainServiceImpl westIndianTrainService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private NorthIndianTrainServiceImpl northIndianTrainService;
+&nbsp;
+&nbsp;
+&nbsp;    //Passenger service
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private EastPassengerService eastPassengerService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private NorthPassengerService northPassengerService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private SouthPassengerService southPassengerService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private WestPassengerService westPassengerService;
+&nbsp;
+&nbsp;
+&nbsp;    //Payment service
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private EastPaymentService eastPaymentService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private NorthPaymentService northPaymentService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private SouthPaymentService southPaymentService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private WestPaymentService westPaymentService;
+&nbsp;
+&nbsp;
+&nbsp;    private boolean checkBerthPreferenceIsValid(String preference){
+<b class="fc">&nbsp;        if (preference.equals(&quot;L&quot;) || preference.equals(&quot;M&quot;) || preference.equals(&quot;U&quot;)){</b>
+<b class="fc">&nbsp;            return true;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //getting particular train service
+&nbsp;    private TrainService getTrainService(String region){
+<b class="pc">&nbsp;        if (region.equals(&quot;NR&quot;)){</b>
+<b class="fc">&nbsp;            return northIndianTrainService;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (region.equals(&quot;SR&quot;)){</b>
+<b class="nc">&nbsp;            return southIndianTrainService;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (region.equals(&quot;WR&quot;)){</b>
+<b class="nc">&nbsp;            return westIndianTrainService;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (region.equals(&quot;ER&quot;)){</b>
+<b class="nc">&nbsp;            return eastIndianTrainService;</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    //getting particular passenger service
+&nbsp;
+&nbsp;    private PassengerService getPassengerService(String region){
+<b class="fc">&nbsp;        if (region.equals(&quot;NR&quot;)){</b>
+<b class="fc">&nbsp;            return northPassengerService;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        else if (region.equals(&quot;SR&quot;)){</b>
+<b class="fc">&nbsp;            return southPassengerService;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (region.equals(&quot;WR&quot;)){</b>
+<b class="nc">&nbsp;            return westPassengerService;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (region.equals(&quot;ER&quot;)){</b>
+<b class="nc">&nbsp;            return eastPassengerService;</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //getting a particular payment service
+&nbsp;
+&nbsp;    private PaymentService getPaymentService(String region){
+<b class="fc">&nbsp;        if (region.equals(&quot;NR&quot;)){</b>
+<b class="fc">&nbsp;            return northPaymentService;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        else if (region.equals(&quot;SR&quot;)){</b>
+<b class="fc">&nbsp;            return southPaymentService;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (region.equals(&quot;WR&quot;)){</b>
+<b class="nc">&nbsp;            return westPaymentService;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (region.equals(&quot;ER&quot;)){</b>
+<b class="nc">&nbsp;            return eastPaymentService;</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    private void handleBerthCancellation(Train train,Passenger passengerToBeRemoved,int passengerToBeRemovedSeatNumberInTheTrain){
+&nbsp;
+<b class="fc">&nbsp;        PassengerService passengerServiceFrom = getPassengerService(getRegionFromCity(passengerToBeRemoved.getFrom()));</b>
+<b class="fc">&nbsp;        PassengerService passengerServiceTo = getPassengerService(getRegionFromCity(passengerToBeRemoved.getTo()));</b>
+&nbsp;
+<b class="fc">&nbsp;        PaymentService paymentServiceFrom = getPaymentService(getRegionFromCity(passengerToBeRemoved.getFrom()));</b>
+<b class="fc">&nbsp;        PaymentService paymentServiceTo = getPaymentService(getRegionFromCity(passengerToBeRemoved.getTo()));</b>
+&nbsp;
+<b class="fc">&nbsp;        TrainService trainService = getTrainService(train.getHomeRegion());</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        if (!train.getRacPassengers().isEmpty()){</b>
+&nbsp;
+<b class="fc">&nbsp;            Passenger passengerFromRAC = train.getRacPassengers().remove(0);</b>
+<b class="fc">&nbsp;            passengerFromRAC.setAllowedPreference(passengerToBeRemoved.getAllowedPreference());</b>
+<b class="fc">&nbsp;            passengerFromRAC.setSeatNumber(passengerToBeRemoved.getSeatNumber());</b>
+&nbsp;
+<b class="pc">&nbsp;            assert passengerServiceFrom != null;</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            passengerServiceFrom.savePassenger(passengerFromRAC);  //1</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            Payment updatedPaymentDetailsOfRACPassenger = passengerFromRAC.getBill();</b>
+<b class="fc">&nbsp;            updatedPaymentDetailsOfRACPassenger.setBerthPreference(passengerToBeRemoved.getAllowedPreference());</b>
+<b class="fc">&nbsp;            updatedPaymentDetailsOfRACPassenger.setSeatNumber(passengerToBeRemovedSeatNumberInTheTrain);</b>
+<b class="pc">&nbsp;            assert paymentServiceFrom != null;</b>
+&nbsp;
+<b class="fc">&nbsp;            paymentServiceFrom.savePayment(updatedPaymentDetailsOfRACPassenger); // -&gt; 1</b>
+&nbsp;
+<b class="fc">&nbsp;            List&lt;Passenger&gt; berthList = getBerthList(train,passengerToBeRemoved.getAllowedPreference());</b>
+<b class="fc">&nbsp;            berthList.set(passengerToBeRemovedSeatNumberInTheTrain-1,passengerFromRAC);</b>
+&nbsp;
+&nbsp;
+<b class="pc">&nbsp;            assert passengerServiceTo != null;</b>
+&nbsp;
+<b class="fc">&nbsp;            passengerServiceTo.savePassenger(passengerFromRAC);// -&gt; 1</b>
+&nbsp;
+<b class="fc">&nbsp;            paymentServiceFrom.delete(passengerToBeRemoved.getBill()); //1</b>
+&nbsp;
+<b class="fc">&nbsp;            passengerServiceFrom.delete(passengerToBeRemoved);// 1</b>
+&nbsp;
+<b class="fc">&nbsp;            train.getBookedPassengers().remove(passengerToBeRemoved);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;            train.getPayments().remove(passengerToBeRemoved.getBill());</b>
+&nbsp;
+<b class="fc">&nbsp;            train.setRacCount(train.getRacCount()+1);</b>
+&nbsp;
+<b class="pc">&nbsp;            if (!train.getWaitingList().isEmpty()){</b>
+<b class="fc">&nbsp;                Passenger passengerFromWL = train.getWaitingList().remove(0);</b>
+<b class="fc">&nbsp;                train.getRacPassengers().add(passengerFromWL);</b>
+&nbsp;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;                passengerFromWL.setAllowedPreference(&quot;RAC&quot;);</b>
+<b class="fc">&nbsp;                passengerFromWL.setSeatNumber(train.getRacPassengers().size());</b>
+&nbsp;
+<b class="fc">&nbsp;                Payment updatePaymentDetailsForPassengerWL = passengerFromWL.getBill();</b>
+<b class="fc">&nbsp;                updatePaymentDetailsForPassengerWL.setBerthPreference(&quot;RAC&quot;);</b>
+<b class="fc">&nbsp;                updatePaymentDetailsForPassengerWL.setSeatNumber(train.getRacPassengers().size());</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;                train.setRacCount(train.getRacCount()-1);</b>
+<b class="fc">&nbsp;                train.setWaitingCount(train.getWaitingCount()+1);</b>
+&nbsp;
+<b class="fc">&nbsp;                paymentServiceFrom.savePayment(updatePaymentDetailsForPassengerWL);  // 2</b>
+<b class="fc">&nbsp;                passengerServiceFrom.savePassenger(passengerFromWL); // 2</b>
+&nbsp;                //trainService.saveTrain(train); //1
+&nbsp;            }
+&nbsp;        }
+&nbsp;        else {
+<b class="fc">&nbsp;            List&lt;Passenger&gt; getPassengerBerthList = getBerthList(train,passengerToBeRemoved.getAllowedPreference());</b>
+<b class="pc">&nbsp;            if (passengerToBeRemoved.getAllowedPreference().equals(&quot;L&quot;)){</b>
+<b class="fc">&nbsp;                train.setLowerBerthCount(train.getLowerBerthCount()+1);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            else if (passengerToBeRemoved.getAllowedPreference().equals(&quot;M&quot;)){</b>
+<b class="nc">&nbsp;                train.setMiddleBerthCount(train.getMiddleBerthCount()+1);</b>
+&nbsp;            }
+<b class="nc">&nbsp;            else if (passengerToBeRemoved.getAllowedPreference().equals(&quot;U&quot;)){</b>
+<b class="nc">&nbsp;                train.setUpperBerthCount(train.getUpperBerthCount()+1);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            getPassengerBerthList.remove(passengerToBeRemoved); // L or U or M or RAC or WL</b>
+<b class="fc">&nbsp;            train.getBookedPassengers().remove(passengerToBeRemoved);</b>
+<b class="fc">&nbsp;            train.getPayments().remove(passengerToBeRemoved.getBill());</b>
+<b class="pc">&nbsp;            assert passengerServiceFrom != null;</b>
+<b class="fc">&nbsp;            passengerServiceFrom.delete(passengerToBeRemoved);</b>
+&nbsp;        }
+<b class="pc">&nbsp;        assert trainService != null;</b>
+<b class="fc">&nbsp;        trainService.saveTrain(train); // 1</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private String checkPreferenceAvailable(String berthPreference, Train train){
+<b class="pc">&nbsp;        if (berthPreference.equals(&quot;L&quot;) &amp;&amp; train.getLowerBerthCount()&gt;0 ){</b>
+<b class="fc">&nbsp;            return &quot;LBA&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (berthPreference.equals(&quot;M&quot;) &amp;&amp; train.getMiddleBerthCount()&gt;0 ){</b>
+<b class="nc">&nbsp;            return &quot;MBA&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (berthPreference.equals(&quot;U&quot;) &amp;&amp; train.getUpperBerthCount()&gt;0){</b>
+<b class="nc">&nbsp;            return &quot;UBA&quot;;</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="nc">&nbsp;            return &quot;NA&quot;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private int getParticularBerthCount(String berthPreference, Train train){
+<b class="fc">&nbsp;        int output=0;</b>
+<b class="pc">&nbsp;        if (berthPreference.equals(&quot;L&quot;)){</b>
+<b class="nc">&nbsp;            output = train.getLowerBerthCount();</b>
+&nbsp;        }
+<b class="pc">&nbsp;        else if (berthPreference.equals(&quot;M&quot;)){</b>
+<b class="nc">&nbsp;            output= train.getMiddleBerthCount();</b>
+&nbsp;        }
+<b class="pc">&nbsp;        else if (berthPreference.equals(&quot;U&quot;)){</b>
+<b class="fc">&nbsp;            output= train.getUpperBerthCount();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return output;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private String checkFirstPassengersPreference(String berthPreference,Train train){
+<b class="pc">&nbsp;        if (getParticularBerthCount(berthPreference,train) &gt; 0 &amp;&amp; berthPreference.equals(&quot;L&quot;)) {</b>
+<b class="nc">&nbsp;            return &quot;L&quot;;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        else if (getParticularBerthCount(berthPreference,train) &gt; 0 &amp;&amp; berthPreference.equals(&quot;M&quot;)){</b>
+<b class="nc">&nbsp;            return &quot;M&quot;;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        else if (getParticularBerthCount(berthPreference,train) &gt; 0 &amp;&amp; berthPreference.equals(&quot;U&quot;)){</b>
+<b class="nc">&nbsp;            return &quot;U&quot;;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return &quot;INV&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private boolean isValidBerthPreference(String berthPreference){
+<b class="pc">&nbsp;        return berthPreference!=null &amp;&amp; (berthPreference.equals(&quot;L&quot;) || berthPreference.equals(&quot;U&quot;)|| berthPreference.equals(&quot;M&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private String getRegionFromCity(String city){
+<b class="fc">&nbsp;        List&lt;String&gt; southCities = List.of(&quot;Chennai&quot;,</b>
+&nbsp;                &quot;Thiruvananthapuram&quot;,
+&nbsp;                &quot;Bangalore&quot;,
+&nbsp;                &quot;Hyderabad&quot;,
+&nbsp;                &quot;Coimbatore&quot;,
+&nbsp;                &quot;Kochin&quot;,
+&nbsp;                &quot;Madurai&quot;,
+&nbsp;                &quot;Mysore&quot;,
+&nbsp;                &quot;Thanjavur&quot;,
+&nbsp;                &quot;Pondicherry&quot;);
+<b class="fc">&nbsp;        List&lt;String&gt; northCities = List.of(&quot;Delhi&quot;,</b>
+&nbsp;                &quot;Jaipur&quot;,
+&nbsp;                &quot;Lucknow&quot;,
+&nbsp;                &quot;Srinagar&quot;,
+&nbsp;                &quot;Chandigarh&quot;,
+&nbsp;                &quot;Jammu&quot;,
+&nbsp;                &quot;Dehradun&quot;);
+<b class="fc">&nbsp;        List&lt;String&gt; eastCities = List.of(&quot;Bhubaneswar&quot;,</b>
+&nbsp;                &quot;Cuttack&quot;,
+&nbsp;                &quot;Kolkata&quot;);
+<b class="fc">&nbsp;        List&lt;String&gt; westCities = List.of(&quot;Aurangabad&quot;,</b>
+&nbsp;                &quot;Mumbai&quot;,
+&nbsp;                &quot;Mahabaleshwar&quot;,
+&nbsp;                &quot;Nagpur&quot;,
+&nbsp;                &quot;Pune&quot;,
+&nbsp;                &quot;Shirdi&quot;);
+&nbsp;
+<b class="fc">&nbsp;        if (northCities.contains(city)){</b>
+<b class="fc">&nbsp;            return &quot;NR&quot;;</b>
+&nbsp;        }
+<b class="pc">&nbsp;        else if (southCities.contains(city)){</b>
+<b class="fc">&nbsp;            return &quot;SR&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (westCities.contains(city)){</b>
+<b class="nc">&nbsp;            return &quot;WR&quot;;</b>
+&nbsp;        }
+<b class="nc">&nbsp;        else if (eastCities.contains(city)){</b>
+<b class="nc">&nbsp;            return &quot;ER&quot;;</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="nc">&nbsp;            return &quot;INV&quot;;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    //given
+&nbsp;    // fromRegion
+&nbsp;    // toRegion
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Passenger bookPassenger(PassengerDTO passengerDTO) {
+&nbsp;
+<b class="fc">&nbsp;        if ( passengerDTO.getPassengerTrainId() == null){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Train ID is null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (passengerDTO.getPassengerTrainId().isEmpty()){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Train ID is empty&quot;);</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (passengerDTO.getBerthPreference() == null ){</b>
+<b class="nc">&nbsp;            throw new InvalidDetailsException(&quot;Berth is null&quot;);</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (passengerDTO.getBerthPreference().isEmpty()){</b>
+<b class="nc">&nbsp;            throw new InvalidDetailsException(&quot;Berth is empty&quot;);</b>
+&nbsp;        }
+<b class="pc">&nbsp;        if (!checkBerthPreferenceIsValid(passengerDTO.getBerthPreference())){</b>
+<b class="nc">&nbsp;            throw new InvalidDetailsException(&quot;Berth preference is invalid&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if ( passengerDTO.getFrom() == null){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;from details is null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (passengerDTO.getFrom().isEmpty()){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;from details is empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (passengerDTO.getTo() == null ){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;to details is null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (passengerDTO.getTo().isEmpty()){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;to details is empty&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        String fromRegion = getRegionFromCity(passengerDTO.getFrom());</b>
+<b class="fc">&nbsp;        String toRegion = getRegionFromCity(passengerDTO.getTo());</b>
+&nbsp;
+<b class="fc">&nbsp;        String trainId = passengerDTO.getPassengerTrainId();</b>
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;Train&gt; optionalTrain = Objects.requireNonNull(getTrainService(fromRegion)).findTrainById(trainId);</b>
+&nbsp;
+<b class="fc">&nbsp;        Passenger updatedPassenger= null;</b>
+&nbsp;
+<b class="pc">&nbsp;            if (optionalTrain.isEmpty()){</b>
+<b class="nc">&nbsp;                throw new RuntimeException(&quot;Train not found with this train Id : &quot;+ passengerDTO.getPassengerTrainId());</b>
+&nbsp;            }
+<b class="pc">&nbsp;            if (optionalTrain.get().getLowerBerthCount() == 0 &amp;&amp; optionalTrain.get().getMiddleBerthCount() == 0 &amp;&amp; optionalTrain.get().getUpperBerthCount() == 0 &amp;&amp; optionalTrain.get().getRacCount() ==0 &amp;&amp; optionalTrain.get().getWaitingCount() == 0){</b>
+<b class="nc">&nbsp;                throw new RuntimeException(&quot;No tickets available&quot;);</b>
+&nbsp;            }
+&nbsp;
+<b class="fc">&nbsp;            String berthPreference = passengerDTO.getBerthPreference();</b>
+<b class="fc">&nbsp;            Train train = optionalTrain.get();</b>
+&nbsp;
+<b class="pc">&nbsp;            if (isValidBerthPreference(berthPreference)){</b>
+&nbsp;                //passenger&#39;s first preference checking
+<b class="fc">&nbsp;                Passenger passenger = Mapper.convertToPassenger(passengerDTO);</b>
+<b class="pc">&nbsp;                if (checkFirstPassengersPreference(berthPreference,train).equals(&quot;L&quot;)){</b>
+<b class="nc">&nbsp;                    train.setLowerBerthCount(train.getLowerBerthCount()-1);</b>
+<b class="nc">&nbsp;                    updatedPassenger= bookTicket(passenger,</b>
+&nbsp;                            train,
+<b class="nc">&nbsp;                            new Payment(train.getTrainName(),trainId,passenger.getPassengerName(),&quot;&quot;,berthPreference,0,train.getTrainFee()),</b>
+&nbsp;                            berthPreference);
+&nbsp;                }
+<b class="pc">&nbsp;                else if (checkFirstPassengersPreference(berthPreference,train).equals(&quot;M&quot;)){</b>
+<b class="nc">&nbsp;                        train.setMiddleBerthCount(train.getMiddleBerthCount()-1);</b>
+<b class="nc">&nbsp;                        updatedPassenger= bookTicket(passenger,</b>
+&nbsp;                                train,
+<b class="nc">&nbsp;                                new Payment(train.getTrainName(),trainId,passenger.getPassengerName(),&quot;&quot;,berthPreference,0,train.getTrainFee()),</b>
+&nbsp;                                berthPreference);
+&nbsp;                }
+<b class="pc">&nbsp;                else if (checkFirstPassengersPreference(berthPreference,train).equals(&quot;U&quot;)){</b>
+<b class="nc">&nbsp;                        train.setUpperBerthCount(train.getUpperBerthCount()-1);</b>
+<b class="nc">&nbsp;                        updatedPassenger= bookTicket(passenger,</b>
+&nbsp;                                train,
+<b class="nc">&nbsp;                                new Payment(train.getTrainName(),trainId,passenger.getPassengerName(),&quot;&quot;,berthPreference,0,train.getTrainFee()),</b>
+&nbsp;                                berthPreference);
+&nbsp;                }
+&nbsp;                else {
+<b class="pc">&nbsp;                    if (checkPreferenceAvailable(&quot;L&quot;,train).equals(&quot;LBA&quot;)){</b>
+<b class="fc">&nbsp;                        train.setLowerBerthCount(train.getLowerBerthCount()-1);</b>
+<b class="fc">&nbsp;                            updatedPassenger= bookTicket(passenger,</b>
+&nbsp;                                    train,
+<b class="fc">&nbsp;                                    new Payment(train.getTrainName(),trainId,passenger.getPassengerName(),&quot;&quot;,&quot;L&quot;,0,train.getTrainFee()),</b>
+&nbsp;                                    &quot;L&quot;);
+&nbsp;                    }
+<b class="nc">&nbsp;                    else if (checkPreferenceAvailable(&quot;M&quot;,train).equals(&quot;MBA&quot;)){</b>
+<b class="nc">&nbsp;                        train.setMiddleBerthCount(train.getMiddleBerthCount()-1);</b>
+<b class="nc">&nbsp;                        updatedPassenger= bookTicket(passenger,</b>
+&nbsp;                                    train,
+<b class="nc">&nbsp;                                    new Payment(train.getTrainName(),trainId,passenger.getPassengerName(),&quot;&quot;,&quot;M&quot;,0,train.getTrainFee()),</b>
+&nbsp;                                    &quot;M&quot;);
+&nbsp;                    }
+<b class="nc">&nbsp;                    else if (checkPreferenceAvailable(&quot;U&quot;,train).equals(&quot;UBA&quot;)){</b>
+<b class="nc">&nbsp;                            train.setUpperBerthCount(train.getUpperBerthCount()-1);</b>
+<b class="nc">&nbsp;                            updatedPassenger= bookTicket(passenger,</b>
+&nbsp;                                    train,
+<b class="nc">&nbsp;                                    new Payment(train.getTrainName(),trainId,passenger.getPassengerName(),&quot;&quot;,&quot;U&quot;,0,train.getTrainFee()),</b>
+&nbsp;                                    &quot;U&quot;);
+&nbsp;                    }
+&nbsp;                    else {
+<b class="nc">&nbsp;                        if (train.getRacCount() &gt; 0 ){</b>
+<b class="nc">&nbsp;                                train.setRacCount(train.getRacCount()-1);</b>
+<b class="nc">&nbsp;                                updatedPassenger= bookTicket(passenger,</b>
+&nbsp;                                        train,
+<b class="nc">&nbsp;                                        new Payment(train.getTrainName(),trainId,passenger.getPassengerName(),&quot;&quot;,&quot;RAC&quot;,0,train.getTrainFee()),</b>
+&nbsp;                                        &quot;RAC&quot;);
+&nbsp;                        }
+<b class="nc">&nbsp;                        else if (train.getWaitingCount() &gt; 0){</b>
+<b class="nc">&nbsp;                                train.setWaitingCount(train.getWaitingCount()-1);</b>
+<b class="nc">&nbsp;                                updatedPassenger= bookTicket(passenger,</b>
+&nbsp;                                        train,
+<b class="nc">&nbsp;                                        new Payment(train.getTrainName(),trainId,passenger.getPassengerName(),&quot;&quot;,&quot;WL&quot;,0,train.getTrainFee()),</b>
+&nbsp;                                        &quot;WL&quot;);
+&nbsp;                        }
+&nbsp;                    }
+&nbsp;                }
+&nbsp;
+<b class="pc">&nbsp;                if (!fromRegion.equals(toRegion)){</b>
+<b class="fc">&nbsp;                    PassengerService toPassengerService = getPassengerService(toRegion);</b>
+<b class="pc">&nbsp;                    assert toPassengerService != null;</b>
+<b class="fc">&nbsp;                    toPassengerService.savePassenger(updatedPassenger);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;            else {
+<b class="nc">&nbsp;                throw new RuntimeException(&quot;Invalid passenger preference&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            String to = passengerDTO.getEmailId();</b>
+<b class="fc">&nbsp;            String subject = &quot;Ticket Booked Successfully&quot;;</b>
+<b class="pc">&nbsp;            assert updatedPassenger != null;</b>
+<b class="fc">&nbsp;            String body = &quot;Dear ,&quot;+passengerDTO.getPassengerName()+ &quot;\n&quot;+&quot;Thank you for booking your with us.&quot;+&quot;The journey details is attached with this email\n\n\n&quot;+</b>
+&nbsp;                &quot;Ticket Details &quot;+&quot;\n\n\n&quot;
+<b class="fc">&nbsp;                +&quot;Passenger Id       : &quot;+updatedPassenger.getId()+&quot;\n&quot;</b>
+<b class="fc">&nbsp;                +&quot;Passenger name     : &quot;+ updatedPassenger.getPassengerName()+&quot;\n&quot;</b>
+<b class="fc">&nbsp;                +&quot;Passenger train name : &quot;+ train.getTrainName()+&quot;\n&quot;</b>
+<b class="fc">&nbsp;                +&quot;From : &quot;+ updatedPassenger.getFrom()+&quot;\n&quot;</b>
+<b class="fc">&nbsp;                +&quot;To : &quot;+ updatedPassenger.getTo()+&quot;\n&quot;</b>
+<b class="fc">&nbsp;                +&quot;Boarding Time : &quot;+ updatedPassenger.getBoardingTime()+&quot;\n&quot;</b>
+<b class="fc">&nbsp;                +&quot;Dropping Time : &quot;+ updatedPassenger.getDroppingTime()+&quot;\n\n\n\n&quot;</b>
+&nbsp;                +&quot;Thanks &amp; Regards ,&quot;+&quot;\n\n&quot;
+&nbsp;                +&quot;Board of Indian Railways&quot;;
+<b class="fc">&nbsp;            sentEmailToThePassenger(to,subject,body);</b>
+<b class="fc">&nbsp;        return updatedPassenger;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private void sentEmailToThePassenger(String to,String subject,String body){
+<b class="fc">&nbsp;        emailService.sentEmail(to,subject,body);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Train&gt; viewAllTrains(String region) {
+<b class="nc">&nbsp;        List&lt;Train&gt; regionWiseTrains=null;</b>
+&nbsp;
+<b class="nc">&nbsp;        TrainService getTrainsFromRegion = getTrainService(region);</b>
+<b class="nc">&nbsp;        assert getTrainsFromRegion != null;</b>
+<b class="nc">&nbsp;        regionWiseTrains = getTrainsFromRegion.getAllTrains();</b>
+&nbsp;
+<b class="nc">&nbsp;        return regionWiseTrains;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String cancelBookingForPassenger(CancelDTO cancelDTO) {
+<b class="fc">&nbsp;        if (cancelDTO.getTrainId() == null ){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Train ID is null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getTrainId().isEmpty()){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Train ID is empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getPassId() == null ){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Pass ID is null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getPassId().isEmpty()){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Pass ID is empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getBerth() == null ){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Berth is null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getBerth().isEmpty()){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Berth is empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (!checkBerthPreferenceIsValid(cancelDTO.getBerth())){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;Berth preference is invalid&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getFrom() == null){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;from details is null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getFrom().isEmpty()){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;from details is empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getTo() == null){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;to details is null&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (cancelDTO.getTo().isEmpty()){</b>
+<b class="fc">&nbsp;            throw new InvalidDetailsException(&quot;to details is empty&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        String from = getRegionFromCity(cancelDTO.getFrom());</b>
+<b class="fc">&nbsp;        String to = getRegionFromCity(cancelDTO.getTo());</b>
+&nbsp;
+<b class="fc">&nbsp;        String trainId = cancelDTO.getTrainId();</b>
+<b class="fc">&nbsp;        String passengerId = cancelDTO.getPassId();</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        Optional&lt;Train&gt; optionalTrain = Objects.requireNonNull(getTrainService(from)).findTrainById(trainId);</b>
+<b class="fc">&nbsp;        Optional&lt;Passenger&gt; optionalPassengerToBeRemoved = Objects.requireNonNull(getPassengerService(from)).findPassengerById(passengerId);</b>
+&nbsp;
+&nbsp;
+<b class="pc">&nbsp;        if (optionalTrain.isPresent() &amp;&amp; optionalPassengerToBeRemoved.isPresent()){</b>
+<b class="fc">&nbsp;            Train train = optionalTrain.get();</b>
+<b class="fc">&nbsp;            Passenger passengerToBeRemoved = optionalPassengerToBeRemoved.get();</b>
+<b class="fc">&nbsp;            String passengerToBeRemoveName = passengerToBeRemoved.getPassengerName();</b>
+&nbsp;
+&nbsp;            //String cancelledMessage = &quot;Passenger : &quot;+ passengerToBeRemoved.getPassengerName()  + &quot;\n&quot; + &quot;Passenger Id : &quot;+ passengerToBeRemoved.getId() + &quot;\n&quot;+ &quot;Train Name : &quot;+ passengerToBeRemoved.getPassengerTrainName()+&quot;\n&quot;+&quot;Refund Amount : &quot;+ passengerToBeRemoved.getBill().getAmount()+&quot;\n&quot;+&quot;Booking cancelled successfully&quot;;
+&nbsp;
+<b class="fc">&nbsp;            String cancelledMessage =&quot;Ticket Cancelled Successfully&quot;;</b>
+<b class="fc">&nbsp;            String allowedPreference = passengerToBeRemoved.getAllowedPreference();</b>
+<b class="fc">&nbsp;            int passengerToBeRemovedInTheTrainSeatNumber = passengerToBeRemoved.getSeatNumber();</b>
+&nbsp;
+<b class="pc">&nbsp;            if (allowedPreference.equals(&quot;L&quot;)|| allowedPreference.equals(&quot;M&quot;)|| allowedPreference.equals(&quot;U&quot;)){</b>
+&nbsp;
+<b class="fc">&nbsp;                PassengerService toPassengerService = getPassengerService(to);</b>
+<b class="pc">&nbsp;                assert toPassengerService != null;</b>
+<b class="fc">&nbsp;                toPassengerService.delete(passengerToBeRemoved); // -&gt;1</b>
+<b class="fc">&nbsp;                handleBerthCancellation(train,passengerToBeRemoved,passengerToBeRemovedInTheTrainSeatNumber);</b>
+<b class="fc">&nbsp;                String toRecipient = cancelDTO.getEmailId();</b>
+<b class="fc">&nbsp;                String subject = &quot;Ticket Cancelled Successfully&quot;;</b>
+<b class="fc">&nbsp;                String body = &quot;Dear ,&quot;+passengerToBeRemoveName + &quot;\n\n\n&quot;+&quot;Your refund amount of Rs : &quot;+train.getTrainFee()+&quot; has been successfully credited to your account&quot;;</b>
+<b class="fc">&nbsp;                sentEmailToThePassenger(toRecipient,subject,body);</b>
+<b class="fc">&nbsp;                return cancelledMessage;</b>
+&nbsp;            }
+&nbsp;        }
+<b class="nc">&nbsp;        return &quot;Something went wrong&quot;;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Optional&lt;Passenger&gt; findPassengerById(String passengerID) {
+<b class="nc">&nbsp;        return Optional.empty();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void setPassengerData(Passenger passenger, Train train, String berthPreference){
+<b class="fc">&nbsp;        passenger.setPassengerTrainName(train.getTrainName());</b>
+<b class="fc">&nbsp;        passenger.setAllowedPreference(berthPreference);</b>
+<b class="fc">&nbsp;        passenger.setBoardingTime(train.getBoardingTime());</b>
+<b class="fc">&nbsp;        passenger.setDroppingTime(train.getDroppingTime());</b>
+<b class="fc">&nbsp;        passenger.setDate(train.getDate());</b>
+<b class="fc">&nbsp;        passenger.setFrom(train.getFrom());</b>
+<b class="fc">&nbsp;        passenger.setTo(train.getTo());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void setPaymentDataForPassenger(Passenger passenger, Train train, Payment payment, String bethPreference, String region){
+&nbsp;
+<b class="fc">&nbsp;        PassengerService passengerService = getPassengerService(region);</b>
+<b class="pc">&nbsp;        assert passengerService != null;</b>
+<b class="fc">&nbsp;        passengerService.savePassenger(passenger); //1</b>
+&nbsp;
+<b class="fc">&nbsp;        payment.setTrainId(train.getId());</b>
+<b class="fc">&nbsp;        payment.setPassengerId(passenger.getId());</b>
+<b class="fc">&nbsp;        payment.setTrainName(train.getTrainName());</b>
+<b class="fc">&nbsp;        payment.setPassengerName(passenger.getPassengerName());</b>
+<b class="fc">&nbsp;        payment.setBerthPreference(bethPreference);</b>
+<b class="fc">&nbsp;        payment.setAmount(train.getTrainFee());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private Passenger bookTicket(Passenger passenger, Train train, Payment payment, String berthPreference) {
+<b class="fc">&nbsp;        setPassengerData(passenger, train,berthPreference);</b>
+<b class="fc">&nbsp;        setPaymentDataForPassenger(passenger, train, payment,berthPreference,getRegionFromCity(passenger.getFrom()));</b>
+<b class="fc">&nbsp;        assignSeatAndSavePayment(passenger, train, payment,berthPreference);</b>
+<b class="fc">&nbsp;        updateTrainDetails(train, passenger, payment);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        PaymentService paymentService = getPaymentService(getRegionFromCity(passenger.getFrom()));</b>
+<b class="fc">&nbsp;        PassengerService passengerService = getPassengerService(getRegionFromCity(passenger.getFrom()));</b>
+<b class="fc">&nbsp;        TrainService trainService = getTrainService(getRegionFromCity(passenger.getFrom()));</b>
+&nbsp;
+&nbsp;
+<b class="pc">&nbsp;        assert paymentService != null;</b>
+<b class="fc">&nbsp;        paymentService.savePayment(payment); //1</b>
+<b class="pc">&nbsp;        assert passengerService != null;</b>
+<b class="fc">&nbsp;        passengerService.savePassenger(passenger); //2</b>
+<b class="pc">&nbsp;        assert trainService != null;</b>
+<b class="fc">&nbsp;        trainService.updateTrain(train); //1</b>
+&nbsp;
+<b class="fc">&nbsp;        return passenger;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void updateTrainDetails(Train train, Passenger passenger, Payment payment){
+<b class="fc">&nbsp;        train.getBookedPassengers().add(passenger);</b>
+<b class="fc">&nbsp;        train.getPayments().add(payment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private void assignSeatAndSavePayment(Passenger passenger, Train train, Payment payment, String berthPreference){
+<b class="fc">&nbsp;        int seatNumber = assignSeatNumber(train, passenger,berthPreference);</b>
+<b class="fc">&nbsp;        payment.setSeatNumber(seatNumber);</b>
+<b class="fc">&nbsp;        passenger.setSeatNumber(seatNumber);</b>
+<b class="fc">&nbsp;        passenger.setBill(payment);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private int assignSeatNumber(Train train, Passenger passenger, String berthPreference){
+<b class="fc">&nbsp;        List&lt;Passenger&gt; berthList_L_M_U = getBerthList(train,berthPreference);</b>
+<b class="fc">&nbsp;        berthList_L_M_U.add(passenger);</b>
+<b class="fc">&nbsp;        return berthList_L_M_U.indexOf(passenger)+1;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private List&lt;Passenger&gt; getBerthList(Train train, String berthPreference){
+<b class="pc">&nbsp;        switch (berthPreference){</b>
+&nbsp;            case &quot;L&quot;:
+<b class="fc">&nbsp;                return train.getLowerBerth();</b>
+&nbsp;            case &quot;M&quot;:
+<b class="nc">&nbsp;                return train.getMiddleBerth();</b>
+&nbsp;            case &quot;U&quot;:
+<b class="nc">&nbsp;                return train.getUpperBerth();</b>
+&nbsp;            case &quot;RAC&quot;:
+<b class="nc">&nbsp;                return train.getRacPassengers();</b>
+&nbsp;            case &quot;WL&quot;:
+<b class="nc">&nbsp;                return train.getWaitingList();</b>
+&nbsp;            default:
+<b class="nc">&nbsp;                throw new IllegalArgumentException(&quot;Invalid berth preference&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-15 10:36</div>
+</div>
+</body>
+</html>

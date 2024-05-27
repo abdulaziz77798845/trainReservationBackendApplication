@@ -1,0 +1,159 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PassengerController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.demo.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: PassengerController (com.example.demo.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PassengerController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.demo.controller;
+&nbsp;
+&nbsp;
+&nbsp;import com.example.demo.TrainFactory.TrainFactory;
+&nbsp;import com.example.demo.dto.CancelDTO;
+&nbsp;import com.example.demo.dto.PassengerDTO;
+&nbsp;import com.example.demo.model.Passenger;
+&nbsp;import com.example.demo.model.Train;
+&nbsp;import com.example.demo.mapper.Mapper;
+&nbsp;import com.example.demo.service.trainImpl.TrainService;
+&nbsp;import com.example.demo.service.booking_and_cancelling.BookingAndCancellingServiceImpl;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/passenger&quot;)
+<b class="fc">&nbsp;public class PassengerController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;   private BookingAndCancellingServiceImpl passengerService;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private TrainFactory trainFactory;
+&nbsp;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Ticket Booking&quot;, security = @SecurityRequirement(name = &quot;bearerAuth&quot;))
+&nbsp;    @PostMapping(&quot;/book&quot;)
+&nbsp;    public ResponseEntity&lt;Passenger&gt; bookPassenger(@RequestBody PassengerDTO passengerDTO){
+<b class="fc">&nbsp;        Passenger passenger = passengerService.bookPassenger(passengerDTO);</b>
+<b class="fc">&nbsp;        return ResponseEntity.ok(passenger);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Ticket Cancelling&quot;,security = @SecurityRequirement(name = &quot;bearerAuth&quot;))
+&nbsp;    @PostMapping(&quot;/cancel&quot;)
+&nbsp;    public ResponseEntity&lt;String&gt; cancelBooking(@RequestBody CancelDTO cancelDTO){
+<b class="fc">&nbsp;        String res = passengerService.cancelBookingForPassenger(cancelDTO);</b>
+<b class="fc">&nbsp;        return ResponseEntity.ok(res);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Operation(summary = &quot;Get all the trains by region&quot;,security = @SecurityRequirement(name = &quot;bearerAuth&quot;))
+&nbsp;    @GetMapping(&quot;/viewAllTheTrainsByRegion&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;Train&gt;&gt; getAllTrainsByRegions(@RequestHeader(&quot;region&quot;) String region){
+<b class="fc">&nbsp;        TrainService trainService = trainFactory.getTrainService(region);</b>
+<b class="fc">&nbsp;        List&lt;Train&gt; trains = trainService.getAllTrains();</b>
+<b class="fc">&nbsp;        return new ResponseEntity&lt;&gt;(trains,HttpStatus.OK);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-05-15 10:36</div>
+</div>
+</body>
+</html>
